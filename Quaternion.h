@@ -29,9 +29,19 @@ public:
 		const _T v2 = second.k;
 		const _T _re = x1 * x2 - y1 * y2 - u1 * u2 - v1 * v2;
 		const _T _i = x1 * y2 + y1 * x2 + u1 * v2 - v1 * u2;
-		const _T _j = x1 * u2 + y1 * v2 + u1 * x2 - v1 * y2;
+		const _T _j = x1 * u2 - y1 * v2 + u1 * x2 + v1 * y2;
 		const _T _k = x1 * v2 + y1 * u2 - u1 * y2 + v1 * x2;
 		return Quaternion<_T>(_re, _i, _j, _k);
+	}
+	friend Quaternion<_T> operator/(const Quaternion<_T>& first, const Quaternion<_T>& second)
+	{
+		const _T norm = (second.re * second.re) + (second.i * second.i) + (second.j * second.j) + (second.k * second.k);
+		Quaternion<_T> secondInversed;
+		secondInversed.re = second.re / norm;
+		secondInversed.i = (-second.i) / norm;
+		secondInversed.j = (-second.j) / norm;
+		secondInversed.k = (-second.k) / norm;
+		return first * secondInversed;
 	}
 	friend Quaternion<_T> operator-(const Quaternion<_T>& _q)
 	{
@@ -43,4 +53,3 @@ public:
 		return first;
 	}
 };
-
